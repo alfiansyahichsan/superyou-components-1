@@ -152,7 +152,7 @@ export default {
 
       input[type="checkbox"]:checked + label:before,
       input[type="radio"]:checked + label:before {
-        content: url(https://superyou.co.id/img/icons/check-darkblue.svg);
+        content: url(https://superyou.app/img/icons/check-darkblue.svg);
       }
     }
   }

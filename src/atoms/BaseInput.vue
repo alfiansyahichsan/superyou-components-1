@@ -1,5 +1,9 @@
 <template>
-  <div class="su-input" :class="{ 'with-note': note, 'input-error': error } " :data-theme="theme">
+  <div
+    class="su-input"
+    :class="{ 'with-note': note, 'input-error': error, 'readonly': readOnly } "
+    :data-theme="theme"
+  >
     <div class="su-input_control" :class="{ 'is-focused': isFocused }">
       <label class="su-input_label">
         {{ label }}
@@ -21,7 +25,10 @@
           <i class="loader"></i>
         </span>
         <span class="span-container" v-if="inputType == 'password'">
-          <i class="password_visibility su_eye" @click.prevent="switchVisibility($event.target.classList)"></i>
+          <i
+            class="password_visibility su_eye"
+            @click.prevent="switchVisibility($event.target.classList)"
+          ></i>
         </span>
         <span class="su-input_icon" v-if="icon">
           <img :src="icon" alt="input icon" />
@@ -108,13 +115,10 @@ export default {
     onInputBlur(e) {
       this.isFocused = false;
       this.checkAllValidation();
-      this.$emit(
-        "blur-change",
-        e.target.value,
-        e.target.getAttribute("name")
-      );
+      this.$emit("blur-change", e.target.value, e.target.getAttribute("name"));
     },
     onInputFocus() {
+      if (this.readOnly) return false;
       this.isFocused = true;
     },
     onInputChange(e) {
@@ -181,7 +185,13 @@ export default {
         this.$emit("error-handler", false, "ok", this.name);
       }
       if (Object.keys(this.equalValue).length != 0) {
-        this.$emit("error-handler", true, "equal-value", this.name, this.equalValue);
+        this.$emit(
+          "error-handler",
+          true,
+          "equal-value",
+          this.name,
+          this.equalValue
+        );
       }
 
       if (this.inputType === "email") {
@@ -190,14 +200,14 @@ export default {
     },
     switchVisibility(e) {
       const refs = this.$refs.password;
-      if (refs.type == 'password') {
-        this.$refs.password.type = 'text';
+      if (refs.type == "password") {
+        this.$refs.password.type = "text";
         e.add("su_edit");
-        e.remove('su_eye');
+        e.remove("su_eye");
       } else {
-        this.$refs.password.type = 'password';
+        this.$refs.password.type = "password";
         e.add("su_eye");
-        e.remove('su_edit');
+        e.remove("su_edit");
       }
     }
   },
@@ -225,15 +235,16 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 @keyframes around {
   0% {
-    transform: rotate(0deg)
+    transform: rotate(0deg);
   }
   100% {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }
 .su-input {
   position: relative;
   margin-bottom: 20px;
+
   &_control {
     &::before {
       bottom: -1px;
@@ -324,7 +335,7 @@ input[type="number"]::-webkit-outer-spin-button {
       top: calc(70% - 0px);
       .loader {
         position: relative;
-        display: inline-block; 
+        display: inline-block;
         animation: around 7s infinite;
         height: 15px;
         width: 15px;
@@ -332,7 +343,8 @@ input[type="number"]::-webkit-outer-spin-button {
           animation: around 0.7s ease-in-out 0.4s infinite;
           background: transparent;
         }
-        &::after, &::before {
+        &::after,
+        &::before {
           content: "";
           background: white;
           position: absolute;
@@ -340,7 +352,8 @@ input[type="number"]::-webkit-outer-spin-button {
           width: 100%;
           height: 100%;
           border-width: 1px;
-          border-color: rgba(112,134,151, .8) rgba(112,134,151, .8) rgba(112,134,151, .8) transparent;
+          border-color: rgba(112, 134, 151, 0.8) rgba(112, 134, 151, 0.8)
+            rgba(112, 134, 151, 0.8) transparent;
           border-style: solid;
           border-radius: 50%;
           box-sizing: border-box;
@@ -351,11 +364,24 @@ input[type="number"]::-webkit-outer-spin-button {
       }
       .password_visibility {
         &.su_edit {
-          content: url(https://superyou.co.id/img/icons/edit-gray.svg)
+          content: url(https://superyou.co.id/img/icons/edit-gray.svg);
         }
         &.su_eye {
-          content: url(https://superyou.co.id/img/icons/eye.svg)
+          content: url(https://superyou.co.id/img/icons/eye.svg);
         }
+      }
+    }
+  }
+
+  &.readonly {
+    .su-input_control {
+      &::before,
+      &::after {
+        visibility: hidden;
+      }
+
+      .su-input_note {
+        bottom: -12px;
       }
     }
   }

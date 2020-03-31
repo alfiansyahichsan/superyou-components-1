@@ -1,5 +1,9 @@
 <template>
-  <div class="su-date-wrapper" :data-theme="theme">
+  <div
+    class="su-date-wrapper"
+    :data-theme="theme"
+    :class="{'disabled': disabled, 'readonly': readOnly}"
+  >
     <label :class="{ 'date-focused': isFocused, 'is-error': error }">{{ label }}</label>
     <div
       class="su-date"
@@ -18,6 +22,8 @@
         @input="updateDay"
         @blur="eachBlur('day', 2)"
         @focus="eachFocus('day')"
+        :readonly="readOnly"
+        :disabled="disabled"
       />
       <span v-if="showDay && showMonth" class="su-date__divider">/</span>
       <input
@@ -30,6 +36,8 @@
         @input="updateMonth"
         @blur="eachBlur('month', 2)"
         @focus="eachFocus('month')"
+        :readonly="readOnly"
+        :disabled="disabled"
       />
       <span v-if="showYear && (showDay || showMonth)" class="su-date__divider">/</span>
       <input
@@ -43,6 +51,8 @@
         @blur="eachBlur('year', 4)"
         @focus="eachFocus('year')"
         @beforeinput="beforeInputYear"
+        :readonly="readOnly"
+        :disabled="disabled"
       />
     </div>
     <span v-if="error" class="su-input_error message">{{ errMsg }}</span>
@@ -94,6 +104,14 @@ export default {
     theme: {
       type: String,
       default: "normal"
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -235,6 +253,7 @@ export default {
       }
     },
     onFocused() {
+      if (this.readOnly || this.disabled) return false;
       this.isFocused = true;
     },
     beforeInputYear(e) {
@@ -254,9 +273,12 @@ export default {
       }
     },
     value(val) {
-      this.year = (new Date(val).getFullYear()).toString();
+      this.year = new Date(val).getFullYear().toString();
       this.month = (new Date(val).getMonth() + 1).toString().padStart(2, 0);
-      this.day = (new Date(val).getDate()).toString().padStart(2, 0);
+      this.day = new Date(val)
+        .getDate()
+        .toString()
+        .padStart(2, 0);
     }
   },
   computed: {
@@ -309,102 +331,115 @@ export default {
       color: #e02020;
     }
   }
-}
-.su-date {
-  $spacing: 0.75em;
-  display: inline-flex;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  &::before,
-  &::after {
-    bottom: 0;
-    content: "";
-    left: 0;
-    position: absolute;
-    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  .su-date {
+    $spacing: 0.75em;
+    display: inline-flex;
+    position: relative;
+    overflow: hidden;
     width: 100%;
-    border-style: solid;
-    border-width: thin 0 0 0;
-  }
-  &::before {
-    border-color: var(--border-bottom-color);
-  }
-  &::after {
-    border-color: var(--color-focused);
-    transform: scaleX(0);
-  }
-  &.date-focused {
+    &::before,
     &::after {
-      transform: scaleX(1);
-      border-width: thin 0 thin 0;
-    }
-  }
-  &.is-error {
-    &::after {
-      border-color: #e02020;
-      transform: scaleX(1);
+      bottom: 0;
+      content: "";
+      left: 0;
+      position: absolute;
+      transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+      width: 100%;
+      border-style: solid;
       border-width: thin 0 0 0;
     }
-  }
-  // 1. Hide the spinner button in Chrome, Safari and Firefox.
-  &__input {
-    min-height: 36px;
-    font-size: 16px;
-    color: var(--text-color);
-    padding: $spacing;
-    padding-right: $spacing / 2;
-    padding-left: $spacing / 4;
-    padding: $spacing 0;
-    background: transparent;
-    border: none;
-    text-align: left;
-
-    &::placeholder {
-      color: var(--placeholder-color);
+    &::before {
+      border-color: var(--border-bottom-color);
     }
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -moz-appearance: textfield; // 1
-    &::-webkit-inner-spin-button {
-      display: none; // 1
+    &::after {
+      border-color: var(--color-focused);
+      transform: scaleX(0);
     }
-
-    &:focus {
-      outline: none;
+    &.date-focused {
+      &::after {
+        transform: scaleX(1);
+        border-width: thin 0 thin 0;
+      }
     }
-    &--day {
-      width: 30px;
+    &.is-error {
+      &::after {
+        border-color: #e02020;
+        transform: scaleX(1);
+        border-width: thin 0 0 0;
+      }
     }
-    &--month {
-      margin-left: 3px;
-      margin-right: 3px;
-      width: 40px;
-      text-align: center;
-    }
-    &--year {
-      width: 100%;
-      padding-left: 10px;
-    }
-  }
-  &__divider {
-    font-size: 16px;
-    padding-top: $spacing;
-    padding-bottom: $spacing;
-    /* padding: 0.75em 5px; */
-    pointer-events: none;
-    color: var(--label-text-color);
-  }
-  .message {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: -20px;
-    font-size: 10px;
-    &.su-input_error {
-      color: #e02020;
-    }
-    &.su-input_note {
+    // 1. Hide the spinner button in Chrome, Safari and Firefox.
+    &__input {
+      min-height: 36px;
+      font-size: 16px;
       color: var(--text-color);
+      padding: $spacing;
+      padding-right: $spacing / 2;
+      padding-left: $spacing / 4;
+      padding: $spacing 0;
+      background: transparent;
+      border: none;
+      text-align: left;
+
+      &::placeholder {
+        color: var(--placeholder-color);
+      }
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -moz-appearance: textfield; // 1
+      &::-webkit-inner-spin-button {
+        display: none; // 1
+      }
+
+      &:focus {
+        outline: none;
+      }
+      &--day {
+        width: 30px;
+      }
+      &--month {
+        margin-left: 3px;
+        margin-right: 3px;
+        width: 40px;
+        text-align: center;
+      }
+      &--year {
+        width: 100%;
+        padding-left: 10px;
+      }
+    }
+    &__divider {
+      font-size: 16px;
+      padding-top: $spacing;
+      padding-bottom: $spacing;
+      /* padding: 0.75em 5px; */
+      pointer-events: none;
+      color: var(--label-text-color);
+    }
+    .message {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: -20px;
+      font-size: 10px;
+      &.su-input_error {
+        color: #e02020;
+      }
+      &.su-input_note {
+        color: var(--text-color);
+      }
+    }
+  }
+
+  &.readonly {
+    .su-date {
+      &::after,
+      &::before {
+        visibility: hidden;
+      }
+
+      input {
+        cursor: default;
+      }
     }
   }
 }

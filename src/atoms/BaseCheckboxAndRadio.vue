@@ -1,5 +1,9 @@
 <template>
-  <div class="su-input_checkboxes" :class="axis" :data-theme="theme">
+  <div
+    class="su-input_checkboxes"
+    :class="{[axis]: true, 'readonly': readOnly, 'disabled': disabled}"
+    :data-theme="theme"
+  >
     <label class="main" :class="{'is-error': error }">{{ label }}</label>
     <div class="inline-flex">
       <div class="checkbox-wrapper" v-for="option in options" :key="option.val">
@@ -10,6 +14,7 @@
           :id="option.name"
           :name="name"
           @change="handleOnChange"
+          :disabled="disabled || readOnly"
         />
         <label :for="option.name">{{ option.name }}</label>
       </div>
@@ -61,7 +66,7 @@ export default {
       default: "Gender"
     },
     value: {
-      type: String,
+      type: [String, Array],
       default: ""
     },
     error: {
@@ -73,11 +78,23 @@ export default {
     theme: {
       type: String,
       default: "normal"
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     handleOnChange(e) {
-      this.$emit("handle-change", e.target.value, this.name);
+      if (this.inputType === "checkbox") {
+        this.$emit("handle-change", this.checkedData, this.name);
+      } else {
+        this.$emit("handle-change", e.target.value, this.name);
+      }
     }
   },
   created() {

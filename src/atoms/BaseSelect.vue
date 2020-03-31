@@ -1,5 +1,9 @@
 <template>
-  <div id="su-base-select" :class="{ 'input-error': error }" :data-theme="theme">
+  <div
+    id="su-base-select"
+    :class="{ 'input-error': error, 'disabled': disabled, readonly: readOnly }"
+    :data-theme="theme"
+  >
     <label :class="{ active: isFocused }">{{ label }}</label>
     <slot name="tool-tip"></slot>
     <v-select
@@ -14,6 +18,7 @@
       @search:focus="onFocus"
       @search:blur="onBlur"
       :select-on-key-codes="[8]"
+      :disabled="readOnly || disabled"
     ></v-select>
     <span v-if="error" class="su-input_error message">{{ errMsg }}</span>
   </div>
@@ -68,6 +73,14 @@ export default {
     theme: {
       type: String,
       default: "normal"
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -203,6 +216,37 @@ export default {
       }
     }
   }
+
+  &.readonly {
+    margin-bottom: 10px;
+    .base-select {
+      .vs__dropdown-toggle {
+        background-color: transparent;
+        &::after,
+        &::before {
+          visibility: hidden;
+        }
+        .vs__selected-options,
+        input {
+          background-color: transparent;
+        }
+        .vs__selected,
+        input,
+        .vs__selected-options {
+          cursor: default;
+        }
+        .vs__actions {
+          display: none;
+        }
+      }
+    }
+  }
+  &.disabled {
+    input {
+      cursor: not-allowed;
+    }
+  }
+
   &.input-error {
     label {
       color: #e02020;

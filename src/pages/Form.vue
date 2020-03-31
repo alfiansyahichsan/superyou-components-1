@@ -66,6 +66,7 @@
         axis="row"
         inputType="radio"
         :theme="currentTheme"
+        :value="form.gender.val"
       ></base-checkbox-and-radio>
       <br />
       <base-input-date
@@ -118,7 +119,7 @@ export default {
           label_name: "Email"
         },
         relation: {
-          val: "",
+          val: { label: "Saya Sendiri", val: "self" },
           err: false,
           msg: "",
           label_name: "Hubungan"
@@ -129,7 +130,7 @@ export default {
           msg: ""
         },
         dob: {
-          val: "",
+          val: 694890000000,
           err: false,
           msg: "",
           min_age: 17,

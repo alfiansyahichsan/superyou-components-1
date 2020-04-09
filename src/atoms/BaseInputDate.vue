@@ -284,7 +284,7 @@ export default {
   computed: {
     submittedDate() {
       return Date.parse(
-        `${this.year.padStart(4, 0)}-${this.month}-${this.day}`
+        `${this.month}/${this.day}/${this.year.padStart(4, 0)}`
       );
     },
     dateString() {

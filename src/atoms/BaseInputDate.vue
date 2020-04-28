@@ -213,7 +213,7 @@ export default {
     async updateValue(e, calendarVal = null) {
       if (calendarVal) {
         this.$emit(`input`, calendarVal, this.name);
-        this.$emit("handle-datestring", this.dateString);
+        this.$emit("handle-datestring", new Date(calendarVal).toLocaleDateString());
         setTimeout(() => {
           this.errorChecker();
         }, 200);

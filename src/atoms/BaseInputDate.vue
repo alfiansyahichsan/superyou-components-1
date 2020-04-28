@@ -481,7 +481,9 @@ export default {
   },
   computed: {
     submittedDate() {
-      return Date.parse(`${this.month}/${this.day}/${this.year}`);
+      return Date.parse(
+        `${this.month}/${this.day}/${this.year.padStart(4, 0)}`
+      );
     },
     dateString() {
       return new Date(this.submittedDate).toLocaleDateString();

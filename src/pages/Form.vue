@@ -1,5 +1,5 @@
 <template>
-  <div id="form-container" :style="{'background-color': bgContainer}">
+  <div id="form-container" :style="{ 'background-color': bgContainer }">
     <BaseStepper :dataSteps="dataSteps" />
     <h1>Form</h1>
     <form>
@@ -18,6 +18,7 @@
         :theme="currentTheme"
       ></base-input>
       <br />
+
       <base-input
         :value="form.citizen_id.val"
         :label="form.citizen_id.label_name"
@@ -33,6 +34,7 @@
         required
         :theme="currentTheme"
       ></base-input>
+
       <br />
       <base-input
         :value="form.email.val"
@@ -55,7 +57,7 @@
         v-on:error-handler="(...args) => errorHandlerInput(...args, 'form')"
         :error="form.relation.err"
         :err-msg="form.relation.msg"
-        :select="opt => opt.val !== 'mother'"
+        :select="(opt) => opt.val !== 'mother'"
         :options="dataSelectOpt"
         :theme="currentTheme"
       ></base-select>
@@ -130,10 +132,10 @@ export default {
           msg: ""
         },
         dob: {
-          val: 694890000000,
+          val: "",
           err: false,
           msg: "",
-          min_age: 17,
+          min_age: 0,
           max_age: 40,
           label_name: "Tanggal Lahir"
         }
@@ -180,7 +182,6 @@ export default {
     },
     errorHandlerInput(...args) {
       const [error, type, name, instance] = [...args];
-      console.log(error, type, name, instance, "error handler");
 
       switch (type) {
         case "required": {

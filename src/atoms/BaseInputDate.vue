@@ -82,40 +82,22 @@
     <span v-if="error" class="su-input_error message">{{ errMsg }}</span>
     <span v-else class="su-input_note message">{{ note }}</span>
 
-    <v-calendar
-      v-show="isCalendarShow"
-      v-click-outside="{
-        exclude: ['datepickericon'],
-        handler: 'onCloseCalendar',
-      }"
-      mode="single"
-      ref="calendar"
-      :min-date="minDateAge"
-      :max-date="maxDateAge"
-      :attributes="[
-        {
-          key: 'today',
-          highlight: true,
-          dates: new Date(submittedDate),
-        },
-      ]"
-      @dayclick="dayClicked"
-    ></v-calendar>
+    
   </div>
 </template>
 
 <script>
 import browserDetection from "../helper/browserDetection";
-import VCalendar from "v-calendar/lib/components/calendar.umd";
-import { clickOutside } from "../directives/clickOutside";
+// import VCalendar from "v-calendar/lib/components/calendar.umd";
+// import { clickOutside } from "../directives/clickOutside";
 
 export default {
   name: `BaseInputDate`,
   components: {
-    VCalendar,
+    
   },
   directives: {
-    clickOutside,
+    // clickOutside,
   },
   props: {
     value: {

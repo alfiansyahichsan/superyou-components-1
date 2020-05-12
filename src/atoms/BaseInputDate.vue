@@ -65,7 +65,6 @@
       />
 
 			<span 
-				v-show="!readOnly" 
 				class="ic-close" 
 				@click="resetValue"
 			>
@@ -77,7 +76,6 @@
       >
         <img 
           :src="calendarTheme()" 
-          v-show="!readOnly" 
         />
       </div>
     </div>

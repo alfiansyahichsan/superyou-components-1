@@ -74,10 +74,7 @@
         class="su-calendar"
         @click="handleClickedCalendar"
         ref="datepickericon"
-<<<<<<< HEAD
         v-show="!readOnly" 
-=======
->>>>>>> 97ca6c2650fc043645a23518f8181d47c82199fb
       >
         <img 
           :src="calendarTheme()" 

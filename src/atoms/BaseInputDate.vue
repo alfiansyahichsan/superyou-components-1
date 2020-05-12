@@ -74,9 +74,15 @@
         class="su-calendar"
         @click="handleClickedCalendar"
         ref="datepickericon"
+<<<<<<< HEAD
         v-show="!readOnly" 
+=======
+>>>>>>> 97ca6c2650fc043645a23518f8181d47c82199fb
       >
-        <img :src="calendarTheme()" />
+        <img 
+          :src="calendarTheme()" 
+          v-show="!readOnly" 
+        />
       </div>
     </div>
     <span v-if="error" class="su-input_error message">{{ errMsg }}</span>
@@ -504,7 +510,9 @@ export default {
   },
   computed: {
     submittedDate() {
-      return Date.parse(`${this.month}/${this.day}/${this.year}`);
+      return Date.parse(
+        `${this.month}/${this.day}/${this.year.padStart(4, 0)}`
+      );
     },
     dateString() {
       return new Date(this.submittedDate).toLocaleDateString();

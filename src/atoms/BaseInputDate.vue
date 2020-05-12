@@ -65,7 +65,7 @@
       />
 
 			<span 
-				v-if="!disabled" 
+				v-show="!disabled" 
 				class="ic-close" 
 				@click="resetValue"
 			>
@@ -74,7 +74,7 @@
         class="su-calendar"
         @click="handleClickedCalendar"
         ref="datepickericon"
-        v-if="!disabled"
+        v-show="!disabled"
       >
         <img :src="calendarTheme()" />
       </div>

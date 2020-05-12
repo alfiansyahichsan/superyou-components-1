@@ -75,7 +75,10 @@
         @click="handleClickedCalendar"
         ref="datepickericon"
       >
-        <img :src="calendarTheme()" />
+        <img 
+          :src="calendarTheme()" 
+          v-show="!readOnly" 
+        />
       </div>
     </div>
     <span v-if="error" class="su-input_error message">{{ errMsg }}</span>
@@ -458,7 +461,6 @@ export default {
       }
     },
     async handleClickedCalendar() {
-      if (this.readOnly) return;
       this.isCalendarShow = !this.isCalendarShow;
       this.isCalendarShow ? (this.isFocused = true) : (this.isFocused = false);
       await this.$refs.calendar.move(new Date(this.submittedDate));

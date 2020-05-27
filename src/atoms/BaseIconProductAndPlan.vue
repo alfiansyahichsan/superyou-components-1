@@ -13,7 +13,8 @@ export default {
       productIcon: {
         safe: "https://superyou.co.id/img/icons/prod-umbrella.svg",
         life: "https://superyou.co.id/img/icons/prod-heart.svg",
-        strong: "https://superyou.co.id/img/icons/prod-dumbell.svg"
+        strong: "https://superyou.co.id/img/icons/prod-dumbell.svg",
+        hospital: "/img/products/hospital/icon-hospital.svg"
       },
       planIcon: {
         gold: "https://superyou.co.id/img/icons/badge-gold.svg",

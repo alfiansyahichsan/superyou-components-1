@@ -30,6 +30,7 @@
         <BaseIconProductAndPlan product="life" plan="bronze" />
         <BaseIconProductAndPlan product="safe" plan="gold" size="medium" />
         <BaseIconProductAndPlan product="strong" plan="silver" />
+        <BaseIconProductAndPlan product="hospital" plan="silver" />
       </div>
 
       <br />

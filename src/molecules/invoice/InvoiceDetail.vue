@@ -70,6 +70,8 @@ export default {
           ? "life"
           : product_name.includes("strong")
           ? "strong"
+          : product_name.includes("hospital")
+          ? "hospital"
           : null;
       }
       return null;
